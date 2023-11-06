@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.unibo.functional.TestFunctionalLibrary" tests="1" skipped="1" failures="0" errors="0" timestamp="2023-11-06T11:11:11" hostname="lab22-05-03" time="6.306">
+  <properties/>
+  <testcase name="testFlatten()" classname="it.unibo.functional.TestFunctionalLibrary" time="6.306">
+    <skipped/>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -8,7 +8,6 @@ import java.util.Objects;
  * Implementation of {@link MonthSorter}.
  */
 public final class MonthSorterNested implements MonthSorter {
-
     @Override
     public Comparator<String> sortByDays() {
         return null;

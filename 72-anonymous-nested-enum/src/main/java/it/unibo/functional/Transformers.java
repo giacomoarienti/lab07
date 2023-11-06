@@ -4,6 +4,7 @@ import it.unibo.functional.api.Function;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,7 +55,18 @@ public final class Transformers {
      * @param <O> output elements type
      */
     public static <I, O> List<O> transform(final Iterable<I> base, final Function<I, O> transformer) {
-        return null;
+        return flattenTransform(base, new Function<I,Collection<? extends O>>() {
+            private final Iterator<I> it = base.iterator();
+
+            @Override
+            public Collection<? extends O> call(final I input) {
+                if(it.hasNext()) {
+                    final I element = it.next();
+                    return List.of(transformer.call(element));
+                }
+                return List.of();
+            }
+        });
     }
 
     /**
@@ -70,7 +82,7 @@ public final class Transformers {
      * @param <I> type of the collection elements
      */
     public static <I> List<? extends I> flatten(final Iterable<? extends Collection<? extends I>> base) {
-        return null;
+        return flattenTransform(base, Function.identity());
     }
 
     /**
@@ -78,7 +90,7 @@ public final class Transformers {
      * elements that pass the test.
      * For instance, {@code [1, 2, 3, 4, 5]} could use {@code select} to filter only the odd numbers, thus obtaining
      * {@code [1, 3, 5]}.
-     * <b>NOTE:</b> this function is a special flattenTransform whose function returns a list with a single element if
+     * <b>NOTE:</b> this function is a special  whose function returns a list with a single element if
      * the element passes the test, and an empty list otherwise.
      *
      * @param base the elements on which to operate
@@ -87,7 +99,15 @@ public final class Transformers {
      * @param <I> elements type
      */
     public static <I> List<I> select(final Iterable<I> base, final Function<I, Boolean> test) {
-        return null;
+        return flattenTransform(base, new Function<I, Collection<? extends I>>() {
+            @Override
+            public Collection<? extends I> call(final I input) {
+                if(test.call(input)) {
+                    return List.of(input);
+                }
+                return List.of();
+            }
+        });
     }
 
     /**
@@ -103,6 +123,11 @@ public final class Transformers {
      * @param <I> elements type
      */
     public static <I> List<I> reject(final Iterable<I> base, final Function<I, Boolean> test) {
-        return null;
+        return select(base, new Function<I,Boolean>() {
+            @Override
+            public Boolean call(final I input) {
+               return !test.call(input);
+            }
+        });
     }
 }
